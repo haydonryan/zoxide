@@ -11,18 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Support for RISC-V (riscv64) Linux.
 - `import` now supports fetching entries from `atuin`.
+- `import` now auto-detects database files.
 - `import` now skips directories matching `$_ZO_EXCLUDE_DIRS`.
 - POSIX: support for non-Cygwin Windows environments (e.g. Busybox).
 - Fish: Space-Tab completions now display and run the selected command.
 - Bash/POSIX/Zsh: `z` now honors `$CDPATH`.
+- Bash: don't add to the database when history is disabled (`set +o history`).
+- Nushell: export commands so the init script can be imported with `use`.
+- Support for RISC-V (riscv64) Linux.
 
 ### Changed
 
 - `import` now takes a subcommand instead of the `--from` flag.
-- `import` now auto-detects database files.
-- Nushell: export commands so the init script can be imported with `use`.
 
 ### Fixed
 

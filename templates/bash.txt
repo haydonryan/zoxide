@@ -37,8 +37,10 @@ function __zoxide_cd() {
 {%- if hook == InitHook::Prompt %}
 function __zoxide_hook() {
     \builtin local -r retval="$?"
-    # shellcheck disable=SC2312
-    \command zoxide add -- "$(__zoxide_pwd)"
+    if [[ -o history ]]; then
+        # shellcheck disable=SC2312
+        \command zoxide add -- "$(__zoxide_pwd)"
+    fi
     return "${retval}"
 }
 
@@ -51,7 +53,9 @@ function __zoxide_hook() {
     pwd_tmp="$(__zoxide_pwd)"
     if [[ ${__zoxide_oldpwd} != "${pwd_tmp}" ]]; then
         __zoxide_oldpwd="${pwd_tmp}"
-        \command zoxide add -- "${__zoxide_oldpwd}"
+        if [[ -o history ]]; then
+            \command zoxide add -- "${__zoxide_oldpwd}"
+        fi
     fi
     return "${retval}"
 }
