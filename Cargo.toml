@@ -56,6 +56,7 @@ nix-dev = []
 codegen-units = 1
 debug = 0
 lto = true
+panic = "abort"
 strip = true
 
 [package.metadata.deb]
