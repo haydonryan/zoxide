@@ -176,8 +176,6 @@ impl StreamOptions {
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
-
     use rstest::rstest;
 
     use super::*;
