@@ -1,3 +1,5 @@
+cargo-features = ["panic-immediate-abort"]
+
 [package]
 authors = ["Ajeet D'Souza <98ajeet@gmail.com>"]
 categories = ["command-line-utilities", "filesystem"]
@@ -55,7 +57,7 @@ nix-dev = []
 codegen-units = 1
 debug = 0
 lto = true
-panic = "abort"
+panic = "immediate-abort"
 strip = true
 
 [package.metadata.deb]

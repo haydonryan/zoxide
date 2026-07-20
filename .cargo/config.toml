@@ -1,3 +1,6 @@
+[unstable]
+build-std = ["std", "panic_abort"]
+
 [alias]
 xtask = "run --package xtask --"
 
