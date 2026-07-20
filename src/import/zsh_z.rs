@@ -12,7 +12,7 @@ use crate::import::{ImportError, Importer, z};
 pub(crate) struct ZshZ {}
 
 impl Importer for ZshZ {
-    fn dirs(&self) -> Result<impl Iterator<Item = Result<Dir<'static>, ImportError>>> {
+    fn dirs(&self) -> Result<impl Iterator<Item = Result<Dir, ImportError>>> {
         let path = data_path()?;
         let file = File::open(&path).with_context(|| format!("could not read {path:?}"))?;
         let reader = BufReader::new(file);

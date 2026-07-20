@@ -13,7 +13,7 @@ use crate::import::{ImportError, Importer, z};
 pub(crate) struct ZLua {}
 
 impl Importer for ZLua {
-    fn dirs(&self) -> Result<impl Iterator<Item = Result<Dir<'static>, ImportError>>> {
+    fn dirs(&self) -> Result<impl Iterator<Item = Result<Dir, ImportError>>> {
         let path = data_path()?;
         let err = match File::open(&path) {
             Ok(file) => return Ok(z::Iter::new(BufReader::new(file), path)),

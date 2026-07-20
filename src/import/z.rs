@@ -1,4 +1,3 @@
-use std::borrow::Cow;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::PathBuf;
@@ -13,7 +12,7 @@ use crate::import::{ImportError, Importer};
 pub(crate) struct Z {}
 
 impl Importer for Z {
-    fn dirs(&self) -> Result<impl Iterator<Item = Result<Dir<'static>, ImportError>>> {
+    fn dirs(&self) -> Result<impl Iterator<Item = Result<Dir, ImportError>>> {
         let path = data_path()?;
         let file = File::open(&path).with_context(|| format!("could not read {path:?}"))?;
         let reader = BufReader::new(file);
@@ -37,7 +36,7 @@ impl<R: BufRead> Iter<R> {
         ImportError { path: Some(self.path.clone()), line_num: self.line_num, source }
     }
 
-    fn parse_line(&self, line: &[u8]) -> Result<Dir<'static>, ImportError> {
+    fn parse_line(&self, line: &[u8]) -> Result<Dir, ImportError> {
         let line =
             str::from_utf8(line).map_err(|e| self.err(anyhow!(e).context("invalid utf-8")))?;
         let err = || self.err(anyhow!("invalid entry: {line}"));
@@ -54,12 +53,12 @@ impl<R: BufRead> Iter<R> {
 
         let path = split.next().ok_or_else(err)?;
 
-        Ok(Dir { path: Cow::Owned(path.to_string()), rank, last_accessed })
+        Ok(Dir { path: path.to_string(), rank, last_accessed })
     }
 }
 
 impl<R: BufRead> Iterator for Iter<R> {
-    type Item = Result<Dir<'static>, ImportError>;
+    type Item = Result<Dir, ImportError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         loop {

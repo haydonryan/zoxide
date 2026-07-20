@@ -1,4 +1,3 @@
-use std::borrow::Cow;
 use std::fmt::{self, Display, Formatter};
 
 use serde::{Deserialize, Serialize};
@@ -6,14 +5,13 @@ use serde::{Deserialize, Serialize};
 use crate::util::{DAY, HOUR, WEEK};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Dir<'a> {
-    #[serde(borrow)]
-    pub path: Cow<'a, str>,
+pub struct Dir {
+    pub path: String,
     pub rank: Rank,
     pub last_accessed: Epoch,
 }
 
-impl Dir<'_> {
+impl Dir {
     pub fn display(&self) -> DirDisplay<'_> {
         DirDisplay::new(self)
     }
@@ -34,7 +32,7 @@ impl Dir<'_> {
 }
 
 pub struct DirDisplay<'a> {
-    dir: &'a Dir<'a>,
+    dir: &'a Dir,
     now: Option<Epoch>,
     separator: char,
 }

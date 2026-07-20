@@ -1,4 +1,3 @@
-use std::borrow::Cow;
 use std::io::{BufRead, BufReader};
 use std::process::{Child, ChildStdout, Command, Stdio};
 use std::str;
@@ -12,7 +11,7 @@ use crate::import::{ImportError, Importer};
 pub(crate) struct Atuin {}
 
 impl Importer for Atuin {
-    fn dirs(&self) -> Result<impl Iterator<Item = Result<Dir<'static>, ImportError>>> {
+    fn dirs(&self) -> Result<impl Iterator<Item = Result<Dir, ImportError>>> {
         // atuin renders `{time}` as `YYYY-MM-DD HH:MM:SS` in UTC.
         let mut child = Command::new("atuin")
             .args(["history", "list", "--format={time}\t{directory}", "--print0"])
@@ -46,7 +45,7 @@ impl Iter {
         ImportError { path: None, line_num: self.line_num, source }
     }
 
-    fn parse_line(&self, line: &[u8]) -> Result<Dir<'static>, ImportError> {
+    fn parse_line(&self, line: &[u8]) -> Result<Dir, ImportError> {
         let line =
             str::from_utf8(line).map_err(|e| self.err(anyhow!(e).context("invalid utf-8")))?;
 
@@ -61,7 +60,7 @@ impl Iter {
             .unix_timestamp();
 
         let dir = Dir {
-            path: Cow::Owned(path.to_string()),
+            path: path.to_string(),
             rank: 1.0,
             last_accessed: timestamp as Epoch,
         };
@@ -70,7 +69,7 @@ impl Iter {
 }
 
 impl Iterator for Iter {
-    type Item = Result<Dir<'static>, ImportError>;
+    type Item = Result<Dir, ImportError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         loop {
