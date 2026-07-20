@@ -9,8 +9,8 @@ struct HelpTemplate;
 
 impl IntoResettable<StyledStr> for HelpTemplate {
     fn into_resettable(self) -> Resettable<StyledStr> {
-        color_print::cstr!("\
-{before-help}<bold><underline>{name} {version}</underline></bold>
+        const S: &str = "\
+{before-help}{name} {version}
 {author}
 https://github.com/ajeetdsouza/zoxide
 
@@ -21,13 +21,14 @@ https://github.com/ajeetdsouza/zoxide
 
 {all-args}{after-help}
 
-<bold><underline>Environment variables:</underline></bold>
-{tab}<bold>_ZO_DATA_DIR</bold>        {tab}Path for zoxide data files
-{tab}<bold>_ZO_ECHO</bold>            {tab}Print the matched directory before navigating to it when set to 1
-{tab}<bold>_ZO_EXCLUDE_DIRS</bold>    {tab}List of directory globs to be excluded
-{tab}<bold>_ZO_FZF_OPTS</bold>        {tab}Custom flags to pass to fzf
-{tab}<bold>_ZO_MAXAGE</bold>          {tab}Maximum total age after which entries start getting deleted
-{tab}<bold>_ZO_RESOLVE_SYMLINKS</bold>{tab}Resolve symlinks when storing paths").into_resettable()
+Environment variables:
+{tab}_ZO_DATA_DIR        {tab}Path for zoxide data files
+{tab}_ZO_ECHO            {tab}Print the matched directory before navigating to it when set to 1
+{tab}_ZO_EXCLUDE_DIRS    {tab}List of directory globs to be excluded
+{tab}_ZO_FZF_OPTS        {tab}Custom flags to pass to fzf
+{tab}_ZO_MAXAGE          {tab}Maximum total age after which entries start getting deleted
+{tab}_ZO_RESOLVE_SYMLINKS{tab}Resolve symlinks when storing paths";
+        S.into_resettable()
     }
 }
 

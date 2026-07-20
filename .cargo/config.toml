@@ -5,3 +5,5 @@ xtask = "run --package xtask --"
 # not depend on the vcruntime DLL.
 [target.'cfg(all(windows, target_env = "msvc"))']
 rustflags = ["-C", "target-feature=+crt-static"]
+
+
